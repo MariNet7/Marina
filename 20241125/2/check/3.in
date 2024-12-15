@@ -1,0 +1,11 @@
+class C:
+  num = Num()
+print(C().num)
+c, d = C(), C()
+c.num = 2
+d.num = "567"
+print(c.num+d.num)
+c.num = "qwerty"
+print(c.num+d.num)
+d.num = 0
+print(c.num+d.num)
