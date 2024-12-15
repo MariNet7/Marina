@@ -1,0 +1,12 @@
+x, y, z = Omnibus(), Omnibus(), Omnibus()
+del x.random
+x.a = x.b = x.c = 1
+y.b = y.c = y.d = 2
+z.c = z.d = z.e = [1, 2, 3]
+print(x.a, x.b, x.c, y.b, y.c, y.d, z.c, z.d, z.e)
+del x.c, y.d, z.e
+print(x.a, x.b, y.b, y.c, z.c, z.d)
+del x.c, z.e
+print(x.a, x.b, y.b, y.c, z.c, z.d)
+x.c = y.a = z.e = 3.14
+print(x.a, x.b, x.c, y.b, y.c, z.c, z.d, z.e)

@@ -1,0 +1,11 @@
+a, b, c = Omnibus(), Omnibus(), Omnibus()
+del a.random
+b.y = b.z = b.p = True
+c.z = c.p = c.q = 42
+print(a.x, a.y, a.z, b.y, b.z, b.p, c.z, c.p, c.q)
+del a.z, b.p, c.q
+print(a.x, a.y, b.y, b.z, c.z, c.p)
+del a.z, c.q
+print(a.x, a.y, b.y, b.z, c.z, c.p)
+a.z = b.x = c.q = "Hello"
+print(a.x, a.y, a.z, b.y, b.z, c.z, c.p, c.q)
