@@ -1,0 +1,6 @@
+:log x log(x)
+log 1
+:decorate s "--<<{}>>--".format(s)
+decorate "ЖЖЖ"
+log 5
+quit "{}, {}"
