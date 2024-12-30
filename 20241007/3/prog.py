@@ -1,5 +1,3 @@
-from math import *
-
 def Calc(s, t, u):
     def ff(vblr):
         form = f"def func(x): return {vblr}"
@@ -9,10 +7,16 @@ def Calc(s, t, u):
     y_func = ff(t)
 
     def calc(z):
+        local_vars = {'x': z}
         x = x_func(z)
         y = y_func(z)
-        return eval(u)
+
+        local_vars['y'] = y
+        return eval(u, {}, local_vars)
 
     return calc
 
-print(Calc(*eval(input()))(eval(input())))
+s, t, u = input().split(", ")
+result = Calc(s, t, u)
+z = eval(input())
+print(result(z))
