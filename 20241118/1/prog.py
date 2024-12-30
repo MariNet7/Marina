@@ -14,8 +14,8 @@ class DivStr(UserString):
         l = len(self.data)
         delen = l // n
 
-        for i in range(0, l, delen):
-            yield self.data[i:i + delen]
+        s = [self[i*delen:(i+1)*delen] for i in range(n)]
+        return iter(s)
 
 from sys import stdin
 exec(stdin.read())

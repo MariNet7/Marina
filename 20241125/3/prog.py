@@ -1,46 +1,33 @@
 class Vowel:
-    def __init__(self, **kwargs):
-        self.slots = {s: None for s in "aeiouy"}
-        self.init(**kwargs)
+    slots = 'a', 'e', 'i', 'o', 'u', 'y'
 
-    def init(self, **kwargs):
-        for key, value in kwargs.items():
-            if key in self.slots:
-                self.slots[key] = value
+    def __init__(self, a=None, e=None, i=None, o=None, u=None, y=None):
+        self.a = a
+        self.e = e
+        self.i = i
+        self.o = o
+        self.u = u
+        self.y = y
 
-    def set_slot(self, key, value):
-        if key in self.slots:
-            self.slots[key] = value
 
-    @property
-    def full(self):
-        return all(value for _, value in self.slots.items())
+    def poln(self):
+        return all(getattr(self, slot) is not None for slot in self.slots)
 
-    @full.setter
-    def full(self, val):
-        pass
+    def __str__(self):
+        values = [f"{slot}: {getattr(self, slot)}" for slot in sorted(self.slots) if getattr(self, slot) is not None]
+        return ', '.join(values)
 
     @property
     def answer(self):
         return 42
 
-    def __str__(self):
-        vowel = []
-        for a, v in self.slots.items():
-            if v:
-                vowel.append(f"{a}: {v}")
-        return ", ".join(vowel)
+    @property
+    def full(self):
+        return self.poln()
 
-    def __setattr__(self, key, value):
-        if key in self.slots:
-            self.slots[key] = value
-        else:
-            super().__setattr__(key, value)
-
-wo = Vowel(y=22, a=12, i=3)
-print(wo, wo.full)
-wo.e = wo.o = wo.u = 100500
-print(wo, wo.full)
+    @full.setter
+    def full(self, value):
+        pass
 
 import sys
 exec(sys.stdin.read())
