@@ -1,6 +1,8 @@
 import sys
 from io import StringIO
 import cowsay
+import shlex
+
 
 player_position = (0, 0)
 game_map = [ (10 * [None]) for _ in range(10) ]
@@ -71,11 +73,10 @@ def main():
         if not user_input.strip:
             continue
 
-        args = user_input.strip().split()
-        command = args[0]
-
         try:
-             match command:
+            args = shlex.split(user_input.strip())
+
+            match args[0]:
                 case "up":
                     move((0, -1))
                 case "down":
@@ -85,9 +86,33 @@ def main():
                 case "left":
                     move((-1, 0))
                 case "addmon":
-                    if len(args) != 6:
+                    if len(args) != 9:
                         raise ValueError
-                    add_monster(args[1], (int(args[2]), int(args[3])), args[4], args[5])
+
+                    kitty_name = args[1]
+                    kitty_params = args[2:]
+
+                    hp = None
+                    meow = None
+                    coords = None
+                    i = 0
+                    while i < len(kitty_params):
+                        if kitty_params[i] == 'hello':
+                            meow = kitty_params[i+1]
+                            i += 2
+                        elif kitty_params[i] == 'hp':
+                            hp = int(kitty_params[i+1])
+                            i += 2
+                        elif kitty_params[i] == 'coords':
+                            coords = (int(kitty_params[i+1]), int(kitty_params[i+2]))
+                            i += 3
+                        else:
+                            raise ValueError("Unknown parameter")
+
+                    if None in (meow, coords, hp):
+                        raise ValueError("Missing parameter")
+                    
+                    add_monster(kitty_name, coords, meow, hp)
                 case _:
                     print("Invalid command")
         except:
