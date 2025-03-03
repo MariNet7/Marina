@@ -23,9 +23,10 @@ zluchki = {"jgsbat": cowsay.read_dot_cow(StringIO(r"""
 
 
 class Kitty:
-    def __init__(self, name, meow):
+    def __init__(self, name, meow, hp):
         self.meow = meow
         self.name = name
+        self.hp = hp
 
 
 def move(direction):
@@ -39,17 +40,17 @@ def move(direction):
     return player_position
 
 
-def add_monster(name, location, meow):
+def add_monster(name, location, meow, hp):
     if (name not in cowsay.list_cows()) and (name not in zluchki):
         print(f'Cannot add unknown monster')
         return
 
-    print(f'Added monster {name} to ({location[0]}, {location[1]}) saying {meow}')
+    print(f'Added monster {name} to ({location[0]}, {location[1]}) saying {meow} with {hp} hp')
 
     if game_map[player_position[1]][player_position[0]]:
         print('Replaced the old monster')
 
-    game_map[location[1]][location[0]] = Kitty(name, meow)
+    game_map[location[1]][location[0]] = Kitty(name, meow, hp)
 
 
 def encounter():
@@ -65,7 +66,7 @@ def encounter():
 
 def main():
     print("<<< Welcome to Python-MUD 0.1 >>>")
-    
+
     for user_input in sys.stdin:
         if not user_input.strip:
             continue
@@ -75,18 +76,18 @@ def main():
 
         try:
              match command:
-                case("up"):
+                case "up":
                     move((0, -1))
-                case("down"):
+                case "down":
                     move((0, 1))
-                case("right"):
+                case "right":
                     move((1, 0))
-                case("left"):
+                case "left":
                     move((-1, 0))
-                case("addmon"):
-                    if len(args) != 5:
+                case "addmon":
+                    if len(args) != 6:
                         raise ValueError
-                    add_monster(args[1], (int(args[2]), int(args[3])), args[4])
+                    add_monster(args[1], (int(args[2]), int(args[3])), args[4], args[5])
                 case _:
                     print("Invalid command")
         except:
