@@ -56,6 +56,42 @@ def add_monster(name, location, meow, hp):
     game_map[location[1]][location[0]] = Kitty(name, meow, hp)
 
 
+def antichaos(args):
+    try:
+        args = shlex.split(args.strip())
+
+        if len(args) != 9:
+            raise ValueError
+
+        kitty_name = args[1]
+        kitty_params = args[2:]
+
+        hp = None
+        meow = None
+        coords = None
+        i = 0
+        while i < len(kitty_params):
+            if kitty_params[i] == 'hello':
+                meow = kitty_params[i + 1]
+                i += 2
+            elif kitty_params[i] == 'hp':
+                hp = int(kitty_params[i + 1])
+                i += 2
+            elif kitty_params[i] == 'coords':
+                coords = (int(kitty_params[i + 1]), int(kitty_params[i + 2]))
+                i += 3
+            else:
+                raise ValueError("Unknown parameter")
+
+        if None in (meow, coords, hp):
+            raise ValueError("Missing parameter")
+
+    except Exception as e:
+        print('Invalid arguments')
+
+    return kitty_name, coords, meow, hp
+
+
 def encounter():
     kitty = game_map[player_position[1]][player_position[0]]
 
@@ -84,39 +120,9 @@ class MUD(cmd.Cmd):
         move((1, 0))
 
     def do_addmon(self, arg):
-        try:
-            args = shlex.split(arg.strip())
+        kitty_name, coords, meow, hp = antichaos(arg)
+        add_monster(kitty_name, coords, meow, hp)
 
-            if len(args) != 9:
-                raise ValueError
-
-            kitty_name = args[1]
-            kitty_params = args[2:]
-
-            hp = None
-            meow = None
-            coords = None
-            i = 0
-            while i < len(kitty_params):
-                if kitty_params[i] == 'hello':
-                    meow = kitty_params[i + 1]
-                    i += 2
-                elif kitty_params[i] == 'hp':
-                    hp = int(kitty_params[i + 1])
-                    i += 2
-                elif kitty_params[i] == 'coords':
-                    coords = (int(kitty_params[i + 1]), int(kitty_params[i + 2]))
-                    i += 3
-                else:
-                    raise ValueError("Unknown parameter")
-
-            if None in (meow, coords, hp):
-                raise ValueError("Missing parameter")
-
-            add_monster(kitty_name, coords, meow, hp)
-
-        except Exception as e:
-            print('Invalid arguments')
 
 
 def main():
