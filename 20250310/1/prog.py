@@ -103,6 +103,23 @@ def encounter():
                             cowfile=zluchki[kitty.name]))
 
 
+def attack():
+    kitty = game_map[player_position[1]][player_position[0]]
+    if not kitty:
+        print("No monster here")
+        return
+
+    uron = min(10, kitty.hp)
+    kitty.hp -= uron
+    print(f"Attacked {kitty.name}, damage {uron}")
+
+    if kitty.hp <= 0:
+        print(f'{kitty.name} died')
+        game_map[player_position[1]][player_position[0]] = None
+    else:
+        print(f'{kitty.name} now has {kitty.hp} hp')
+
+
 class MUD(cmd.Cmd):
     intro = '<<< Welcome to Python-MUD 0.1 >>>'
     prompt = 'MUD>> '
@@ -129,6 +146,12 @@ class MUD(cmd.Cmd):
             return [name for name in kitties if name.startswith(text)]
         else:
             return [name for name in ['coords', 'meow', 'hp'] if name.startswith(text)]
+
+    def do_attack(self, args):
+        if args.strip():
+            print("Unexpected argument")
+            return
+        attack()
 
 
 
