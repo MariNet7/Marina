@@ -166,6 +166,15 @@ class MUD(cmd.Cmd):
     def do_attack(self, args):
         attack(antichaos_attack(args))
 
+    def complete_attack(self, line, text):
+        kitties = cowsay.list_cows() + list(zluchki.keys())
+        if len(line.split()) == 2:
+            return [name for name in kitties if name.startswith(text)]
+        elif len(line.split()) == 3:
+            return ['with']
+        else:
+            return [name for name in list(urons.keys()) if name.startswith(text)]
+
 
 def main():
     MUD().cmdloop()
