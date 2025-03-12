@@ -4,7 +4,7 @@ import cowsay
 from io import StringIO
 import cmd
 
-
+urons = {'sword': 10, 'spear': 15, 'axe': 20}
 player_position = (0, 0)
 game_map = [ (10 * [None]) for _ in range(10) ]
 zluchki = {"jgsbat": cowsay.read_dot_cow(StringIO(r"""
@@ -56,7 +56,7 @@ def add_monster(name, location, meow, hp):
     game_map[location[1]][location[0]] = Kitty(name, meow, hp)
 
 
-def antichaos(args):
+def antichaos_addmon(args):
     try:
         args = shlex.split(args.strip())
 
@@ -103,21 +103,37 @@ def encounter():
                             cowfile=zluchki[kitty.name]))
 
 
-def attack():
+def attack(weapon='sword'):
     kitty = game_map[player_position[1]][player_position[0]]
     if not kitty:
         print("No monster here")
         return
 
-    uron = min(10, kitty.hp)
+    uron = min(urons[weapon], kitty.hp)
     kitty.hp -= uron
-    print(f"Attacked {kitty.name}, damage {uron}")
+    print(f"Attacked {kitty.name} with {weapon} damage {uron}")
 
     if kitty.hp <= 0:
         print(f'{kitty.name} died')
         game_map[player_position[1]][player_position[0]] = None
     else:
         print(f'{kitty.name} now has {kitty.hp} hp')
+
+
+def antichaos_attack(args):
+    args = shlex.split(args)
+    weapon = 'sword'
+
+    if len(args) == 0:
+        pass
+    elif len(args) == 2 and args[0] == 'with':
+        if args[1] in urons:
+            weapon = args[1]
+        else:
+            raise ValueError("Unknown weapon")
+    else:
+        raise ValueError("Invalid command syntax. Use: attack [with <weapon>]")
+    return weapon
 
 
 class MUD(cmd.Cmd):
@@ -137,7 +153,7 @@ class MUD(cmd.Cmd):
         move((1, 0))
 
     def do_addmon(self, arg):
-        kitty_name, coords, meow, hp = antichaos(arg)
+        kitty_name, coords, meow, hp = antichaos_addmon(arg)
         add_monster(kitty_name, coords, meow, hp)
 
     def complete_addmon(self, line, text):
@@ -148,11 +164,7 @@ class MUD(cmd.Cmd):
             return [name for name in ['coords', 'meow', 'hp'] if name.startswith(text)]
 
     def do_attack(self, args):
-        if args.strip():
-            print("Unexpected argument")
-            return
-        attack()
-
+        attack(antichaos_attack(args))
 
 
 def main():
