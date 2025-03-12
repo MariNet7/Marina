@@ -103,10 +103,10 @@ def encounter():
                             cowfile=zluchki[kitty.name]))
 
 
-def attack():
+def attack(name):
     kitty = game_map[player_position[1]][player_position[0]]
-    if not kitty:
-        print("No monster here")
+    if (not kitty) or (name[0] != kitty.name):
+        print(f"No {name} here")
         return
 
     uron = min(10, kitty.hp)
@@ -148,10 +148,11 @@ class MUD(cmd.Cmd):
             return [name for name in ['coords', 'meow', 'hp'] if name.startswith(text)]
 
     def do_attack(self, args):
-        if args.strip():
+        args = shlex.split(args)
+        if len(args) != 1:
             print("Unexpected argument")
             return
-        attack()
+        attack(args)
 
 
 
