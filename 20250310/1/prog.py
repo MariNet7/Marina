@@ -103,10 +103,10 @@ def encounter():
                             cowfile=zluchki[kitty.name]))
 
 
-def attack(weapon='sword'):
+def attack(name, weapon='sword'):
     kitty = game_map[player_position[1]][player_position[0]]
-    if not kitty:
-        print("No monster here")
+    if (not kitty) or (name[0] != kitty.name):
+        print(f"No {name} here")
         return
 
     uron = min(urons[weapon], kitty.hp)
