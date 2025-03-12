@@ -123,6 +123,13 @@ class MUD(cmd.Cmd):
         kitty_name, coords, meow, hp = antichaos(arg)
         add_monster(kitty_name, coords, meow, hp)
 
+    def complete_addmon(self, line, text):
+        kitties = cowsay.list_cows() + list(zluchki.keys())
+        if len(kitties) < 3:
+            return [name for name in kitties if name.startswith(text)]
+        else:
+            return [name for name in ['coords', 'meow', 'hp'] if name.startswith(text)]
+
 
 
 def main():
