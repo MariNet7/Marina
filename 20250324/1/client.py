@@ -31,14 +31,18 @@ def encounter(name, hello):
 
 
 def antichaos_addmon(args):
+    hp = None
+    meow = None
+    coords = None
+    kitty_name = None
     try:
         args = shlex.split(args.strip())
 
-        if len(args) != 9:
+        if len(args) != 8:
             raise ValueError
 
-        kitty_name = args[1]
-        kitty_params = args[2:]
+        kitty_name = args[0]
+        kitty_params = args[1:]
 
         hp = None
         meow = None
@@ -106,16 +110,16 @@ class MUD(cmd.Cmd):
         return reply.decode().strip()
 
 
-    def do_up(self):
+    def do_up(self, arg):
         self.loop.run_until_complete(self.move(0, -1))
 
-    def do_down(self):
+    def do_down(self, arg):
         self.loop.run_until_complete(self.move(0, 1))
 
-    def do_left(self):
+    def do_left(self, arg):
         self.loop.run_until_complete(self.move(-1, 0))
 
-    def do_right(self):
+    def do_right(self, arg):
         self.loop.run_until_complete(self.move(1, 0))
 
     async def move(self, dx, dy):
@@ -128,7 +132,7 @@ class MUD(cmd.Cmd):
             encounter(name, meow)
 
     def do_addmon(self, arg):
-        name, meow, hp, coords = antichaos_addmon(arg)
+        name, coords, meow, hp  = antichaos_addmon(arg)
         if (name not in cowsay.list_cows()) and (name not in zluchki):
             print('Cannot add unknown monster')
             return

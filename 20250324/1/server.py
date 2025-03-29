@@ -16,7 +16,6 @@ def move(dx, dy):
     global player_position
     player_position = ((player_position[0] + dx) % 10, (player_position[1] + dy) % 10)
     otvet = f"{player_position[0]} {player_position[1]} "
-
     if game_map[player_position[1]][player_position[0]]:
         otvet += f"{game_map[player_position[1]][player_position[0]].name} {game_map[player_position[1]][player_position[0]].meow}"
 
@@ -57,7 +56,7 @@ async def zapros(reader, writer):
             case _:
                 continue
 
-        writer.write((otvet + '\n').encode())
+        writer.write((str(otvet) + '\n').encode())
         await writer.drain()
     writer.close()
 
