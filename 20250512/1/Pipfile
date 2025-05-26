@@ -6,15 +6,16 @@ name = "pypi"
 [packages]
 babel = "*"
 coverage = "*"
-doit = "*"
-cowsay = "*"
-cowsay-python = "*"
 python-cowsay = "*"
+doit = "*"
 
 [dev-packages]
 flake8 = "*"
 pydocstyle = "*"
 sphinx = "*"
+build = "*"
+setuptools = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.12"

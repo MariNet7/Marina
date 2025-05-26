@@ -56,3 +56,23 @@ def task_test():
         'actions': ['python -m unittest discover -s tests'],
         'task_dep': ['i18n'],
     }
+
+def task_sdist():
+    """Build source distribution"""
+    return {
+        'actions': ['python -m build --sdist'],
+        'file_dep': ['pyproject.toml', 'dodo.py'],
+        'targets': ['dist/mud-0.1.0.tar.gz'],
+        'task_dep': ['html', 'i18n'],
+        'clean': True,
+    }
+
+def task_wheel():
+    """Build wheel distribution"""
+    return {
+        'actions': ['python -m build --wheel'],
+        'file_dep': ['pyproject.toml', 'dodo.py'],
+        'targets': ['dist/mud-0.1.0-py3-none-any.whl'],
+        'task_dep': ['html', 'i18n'],
+        'clean': True,
+    }
