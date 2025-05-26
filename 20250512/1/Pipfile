@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 babel = "*"
 coverage = "*"
-python-cowsay = "*"
 doit = "*"
+cowsay = "*"
+cowsay-python = "*"
+python-cowsay = "*"
 
 [dev-packages]
 flake8 = "*"
