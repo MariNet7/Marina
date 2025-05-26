@@ -1,12 +1,10 @@
 import shlex
 import asyncio
 import cowsay
-from io import StringIO
 import cmd
 import sys
 import readline
 import threading
-
 
 urons = {'sword': 10, 'spear': 15, 'axe': 20}
 zluchki = ["jgsbat"]
@@ -109,7 +107,7 @@ class MUD(cmd.Cmd):
         self.send(f"move {dx} {dy}")
 
     def do_addmon(self, arg):
-        name, (x, y), meow, hp  = antichaos_addmon(arg)
+        name, (x, y), meow, hp = antichaos_addmon(arg)
         if (name not in cowsay.list_cows()) and (name not in zluchki):
             print('Cannot add unknown monster')
             return
@@ -134,6 +132,7 @@ class MUD(cmd.Cmd):
             return ['with']
         else:
             return [name for name in list(urons.keys()) if name.startswith(text)]
+
 
 async def local_server(game):
     try:
@@ -207,6 +206,7 @@ def main():
     game = MUD()
     threading.Thread(target=play_game, args=(game,)).start()
     MUD().cmdloop()
+
 
 if __name__ == "__main__":
     main()

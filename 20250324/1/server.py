@@ -3,9 +3,8 @@ from io import StringIO
 import shlex
 import cowsay
 
-
 players = {}
-game_map = [ (10 * [None]) for _ in range(10) ]
+game_map = [(10 * [None]) for _ in range(10)]
 zluchki = {"jgsbat": cowsay.read_dot_cow(StringIO(r"""
     $the_cow = <<EOC;
              $thoughts
@@ -21,7 +20,8 @@ zluchki = {"jgsbat": cowsay.read_dot_cow(StringIO(r"""
              (((""  "")))
     EOC
     """))
-}
+           }
+
 
 class Kitty:
     def __init__(self, name, meow, hp):
@@ -56,10 +56,9 @@ def add_monster(player, name, x, y, hp, meow):
 
 def encounter(name, meow):
     if name in cowsay.list_cows():
-        print(cowsay.cowsay(meow, cow = name))
+        print(cowsay.cowsay(meow, cow=name))
     else:
         print(cowsay.cowsay(meow, cowfile=zluchki[name]))
-
 
 
 def attack(player, name, uron):
@@ -171,5 +170,6 @@ async def main():
     server = await asyncio.start_server(zapros, 'localhost', 1111)
     async with server:
         await server.serve_forever()
+
 
 asyncio.run(main())
